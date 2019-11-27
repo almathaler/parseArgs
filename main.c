@@ -14,21 +14,22 @@ int main(){
     exit(1);
   }
   //now should have one long string
-  printf("here is input: %s\n", input);
+  //printf("here is input: %s\n", input);
   char ** args = parse_args(input);
+  printf("here are the args: args[0]: %s\t args[1]: %s\n", args[0], args[1]);
   execvp(args[0], args);
   printf("done!\n");
+  free(args);
   return 0;
 }
 
 char ** parse_args(char * line){
-  //delimit based on " " and "\n", since there is a newline at end before the null
   char **to_return = malloc(5 * sizeof(char *)); //check
   int i = 0;
-  char *s = line;
+  //printf("in parse_args, here is line: %s\n", line);
   char * null_loop = "a"; //will set strsep to this and check if it's every null
-  while(null_loop != NULL && i<=5){
-    null_loop = strsep(&s, " \n");
+  while(line != '\0'){
+    null_loop = strsep(&line, " \n");
     to_return[i] = null_loop;
     i++;
   }
