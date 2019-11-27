@@ -7,16 +7,16 @@ char ** parse_args(char * line);
 
 int main(){
   printf("\nWelcome to Alma's Parser! Please input your program and args:\n");
-  char input[100] = "\0";
+  char input[100];
   char *error_catch = fgets(input, 100, stdin);
   if (error_catch == '\0'){
     printf("issue with fgets, aborting...\n");
-    exit(1);
+    exit(0);
   }
   //now should have one long string
   //printf("here is input: %s\n", input);
-  char ** args = parse_args(input);
-  printf("here are the args: args[0]: %s\t args[1]: %s\n", args[0], args[1]);
+  char **args = parse_args(input);
+  printf("here are the args: args[0]: %s\t args[1]: %s\t args[2]: %s\t args[3]: %s\n", args[0], args[1], args[2], args[3]);
   execvp(args[0], args);
   printf("done!\n");
   free(args);
@@ -27,14 +27,11 @@ char ** parse_args(char * line){
   char **to_return = malloc(5 * sizeof(char *)); //check
   int i = 0;
   //printf("in parse_args, here is line: %s\n", line);
-  char * null_loop = "a"; //will set strsep to this and check if it's every null
   while(line != '\0'){
-    null_loop = strsep(&line, " \n");
-    to_return[i] = null_loop;
+    to_return[i] = strsep(&line, " \n");
     i++;
   }
-  if (i<5){ //means you didn't have 5 args, so make this null
-    to_return[i] = NULL;
-  }
+  to_return[i] = NULL;
+  printf("in parse_args, size of i: %d\n", i);
   return to_return;
 }
